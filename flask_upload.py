@@ -10,10 +10,9 @@ import matplotlib.pyplot as plt
 import time, random
 
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 300 * 1024
 
 # 이미지 저장 이름
-value = int(time.time() + random.randint(1, 100)) % 10000
-save_name = str(value)
 
 ## 포즈 리스트를 저장하는 함수
 def get_pose_list(url, files, headers):  # 사람의 포즈(주요 신체부위 18개의 좌표)와 신뢰확률 점수 결과 반환
@@ -34,7 +33,7 @@ def get_pose_list(url, files, headers):  # 사람의 포즈(주요 신체부위 
 ## 이미지 마커 표시 함수
 def get_image_marker(image_name, arr):
     # image = cv2.imread(image_name, cv2.IMREAD_COLOR)
-    image = imread(image_name)
+    image = imread('./uploads/'+image_name)
     height, weight = image.shape[:2]
     print(arr)
     arr = arr[0]['predictions'][0]  # list -> dictionary
@@ -48,7 +47,7 @@ def get_image_marker(image_name, arr):
     implot = plt.imshow(image)
     plt.scatter([10], [20])
     plt.scatter(x, y, c='r', s=40)
-    plt.savefig('./uploads/' + "after_" + save_name + "capture")
+    plt.savefig('./uploads/' + "after_" + image_name)
     # plt.show()
 
 ## 이미지 처리 함수
@@ -69,7 +68,7 @@ def get_processed_image(img_name):
         'X-NCP-APIGW-API-KEY': client_secret \
     }
     pose_list = get_pose_list(url, files, headers)
-    get_image_marker(image_name, pose_list)
+    get_image_marker(img_name, pose_list)
 
 
 #업로드 HTML 렌더링
@@ -80,6 +79,9 @@ def render_file():
 #파일업로드
 @app.route('/fileUpload', methods = ['GET','POST'])
 def upload_file():
+    value = int(time.time() + random.randint(1, 100)) % 10000
+    save_name = str(value)
+
     if request.method == 'POST':
         f = request.files['file']
         f.save('./uploads/' + save_name + secure_filename(f.filename))
