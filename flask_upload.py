@@ -48,7 +48,7 @@ def get_image_marker(image_name, arr):
     implot = plt.imshow(image)
     plt.scatter([10], [20])
     plt.scatter(x, y, c='r', s=40)
-    plt.savefig('./uploads/' + save_name + "capture")
+    plt.savefig('./uploads/' + "after_" + save_name + "capture")
     # plt.show()
 
 ## 이미지 처리 함수
