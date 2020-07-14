@@ -26,7 +26,7 @@ def get_pose_list(url, files, headers):  # 사람의 포즈(주요 신체부위 
 def get_image_marker(image_name, arr):
     # image = cv2.imread(image_name, cv2.IMREAD_COLOR)
     image = imread(image_name)
-
+    height, weight = image.shape[:2]
     print(arr)
     arr = arr[0]['predictions'][0]  # list -> dictionary
     print(arr)
@@ -34,8 +34,8 @@ def get_image_marker(image_name, arr):
     y = []
     for key in arr.keys():
         print(arr[key])
-        x.append(int(arr[key]['x'] * 291))
-        y.append(int(arr[key]['y'] * 366))
+        x.append(int(arr[key]['x'] * weight))
+        y.append(int(arr[key]['y'] * height))
     implot = plt.imshow(image)
     plt.scatter([10], [20])
     plt.scatter(x, y, c='r', s=40)
@@ -55,8 +55,8 @@ if __name__ == "__main__":
     }
     headers = {
         'X-NCP-APIGW-API-KEY-ID': client_id,
-        'X-NCP-APIGW-API-KEY': client_secret\
-    }
+        'X-NCP-APIGW-API-KEY': client_secret \
+        }
 
     pose_list = get_pose_list(url, files, headers)
 
