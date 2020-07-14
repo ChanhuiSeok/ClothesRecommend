@@ -39,8 +39,8 @@ def get_image_marker(image_name, arr):
     implot = plt.imshow(image)
     plt.scatter([10], [20])
     plt.scatter(x, y, c='r', s=40)
-    plt.show()
-
+    plt.savefig('./uploads/capture.PNG')
+    # plt.show()
 
 if __name__ == "__main__":
     # API 관련 정보
