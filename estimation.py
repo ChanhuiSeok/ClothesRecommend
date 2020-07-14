@@ -5,6 +5,11 @@ import json
 import cv2
 from matplotlib.image import imread
 import matplotlib.pyplot as plt
+import time, random
+
+# 이미지 저장 이름
+value = int(time.time() + random.randint(1, 100)) % 10000
+save_name = "capture" + str(value)
 
 
 def get_pose_list(url, files, headers):  # 사람의 포즈(주요 신체부위 18개의 좌표)와 신뢰확률 점수 결과 반환
@@ -39,8 +44,9 @@ def get_image_marker(image_name, arr):
     implot = plt.imshow(image)
     plt.scatter([10], [20])
     plt.scatter(x, y, c='r', s=40)
-    plt.savefig('./uploads/capture.PNG')
+    plt.savefig('./uploads/' + save_name)
     # plt.show()
+
 
 if __name__ == "__main__":
     # API 관련 정보
