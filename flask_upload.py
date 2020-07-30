@@ -5,8 +5,9 @@ import json
 import cv2
 from matplotlib.image import imread
 from flask import Flask, render_template, request
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 import time, random
 
 app = Flask(__name__)
@@ -71,6 +72,15 @@ def get_processed_image(img_name):
     get_image_marker(img_name, pose_list)
 
 
+
+#첫페이지 라우팅(index.html)
+@app.route('/')
+def index():
+        return render_template(
+            "index.html"
+        )
+
+
 #업로드 HTML 렌더링
 @app.route('/upload')
 def render_file():
@@ -88,6 +98,7 @@ def upload_file():
         print('저장 완료')
         get_processed_image(save_name + secure_filename(f.filename))
         return 'uploads 디렉토리 -> 파일 업로드 -> 처리한 이미지 저장 성공!'
+
 
 if __name__ == '__main__':
     app.run(debug = True)
